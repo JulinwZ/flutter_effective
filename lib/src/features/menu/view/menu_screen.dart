@@ -22,9 +22,14 @@ class Category {
   });
 }
 
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends StatefulWidget {
   MenuScreen({Key? key}) : super(key: key);
 
+  @override
+  _MenuScreenState createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen> {
   final List<Category> categories = [
     Category(
       name: 'Черный кофе',
@@ -81,12 +86,36 @@ class MenuScreen extends StatelessWidget {
         ),
       ],
     ),
+    Category(
+      name: 'Напитки авторские',
+      products: [
+        Product(
+          name: 'Зеленый',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
+        Product(
+          name: 'Черный',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
+        Product(
+          name: 'Улун',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
+      ],
+    ),
   ];
+
+  int _selectedCategoryIndex = 0;
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        controller: _controller,
         slivers: [
           SliverAppBar(
             floating: true,
@@ -97,51 +126,45 @@ class MenuScreen extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(left: 16.0),
                   child: Row(
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Черный кофе',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                    children: List.generate(categories.length, (index) {
+                      final categoryName = categories[index].name;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _selectedCategoryIndex = index;
+                            });
+                            _controller.animateTo(
+                              index * 300.0,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                          child: Text(
+                            categoryName,
+                            style: TextStyle(
+                              color: _selectedCategoryIndex == index
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                           ),
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.blue),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              _selectedCategoryIndex == index
+                                  ? Colors.blue
+                                  : Colors.transparent,
+                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 8),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Кофе с молоком',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Чай',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Авторские напитки',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    ],
+                      );
+                    }),
                   ),
                 ),
               ),
