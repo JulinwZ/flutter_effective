@@ -30,47 +30,55 @@ class MenuScreen extends StatelessWidget {
       name: 'Черный кофе',
       products: [
         Product(
-            name: 'Американо',
-            imageUrl: 'assets/images/coffe.png',
-            price: '139 руб'),
+          name: 'Американо',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
         Product(
-            name: 'Эспрессо',
-            imageUrl: 'assets/images/coffe.png',
-            price: '139 руб'),
+          name: 'Эспрессо',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
         Product(
-            name: 'Ванилька',
-            imageUrl: 'assets/images/coffe.png',
-            price: '139 руб'),
+          name: 'Ванилька',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
       ],
     ),
     Category(
       name: 'Кофе с молоком',
       products: [
         Product(
-            name: 'Капучино',
-            imageUrl: 'assets/images/coffe.png',
-            price: '139 руб'),
+          name: 'Капучино',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
         Product(
-            name: 'Латте',
-            imageUrl: 'assets/images/coffe.png',
-            price: '139 руб'),
+          name: 'Латте',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
       ],
     ),
     Category(
       name: 'Чай',
       products: [
         Product(
-            name: 'Зеленый',
-            imageUrl: 'assets/images/coffe.png',
-            price: '139 руб'),
+          name: 'Зеленый',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
         Product(
-            name: 'Черный',
-            imageUrl: 'assets/images/coffe.png',
-            price: '139 руб'),
+          name: 'Черный',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
         Product(
-            name: 'Улун',
-            imageUrl: 'assets/images/coffe.png',
-            price: '139 руб'),
+          name: 'Улун',
+          imageUrl: 'assets/images/coffe.png',
+          price: '139 руб',
+        ),
       ],
     ),
   ];
@@ -99,12 +107,15 @@ class MenuScreen extends StatelessWidget {
                           ),
                         ),
                         style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
-                            )),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.blue)),
+                            ),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.blue),
+                        ),
                       ),
                       SizedBox(width: 8),
                       TextButton(
@@ -177,28 +188,12 @@ class MenuScreen extends StatelessWidget {
                                     product.name,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0,
+                                    ),
                                   ),
                                   SizedBox(height: 8),
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      '${product.price}',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    style: TextButton.styleFrom(
-                                      primary: Colors.white,
-                                      backgroundColor: Colors.blue,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
-                                      textStyle: TextStyle(fontSize: 12),
-                                      minimumSize: Size(116, 32),
-                                    ),
-                                  ),
+                                  ProductPriceButton(product: product),
                                 ],
                               ),
                             ),
@@ -215,5 +210,89 @@ class MenuScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ProductPriceButton extends StatefulWidget {
+  final Product product;
+
+  const ProductPriceButton({Key? key, required this.product}) : super(key: key);
+
+  @override
+  _ProductPriceButtonState createState() => _ProductPriceButtonState();
+}
+
+class _ProductPriceButtonState extends State<ProductPriceButton> {
+  int _quantity = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    if (_quantity == 0) {
+      return TextButton(
+        onPressed: () {
+          setState(() {
+            _quantity++;
+          });
+        },
+        child: Text(
+          widget.product.price,
+          textAlign: TextAlign.center,
+        ),
+        style: TextButton.styleFrom(
+          primary: Colors.white,
+          backgroundColor: Colors.blue,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          textStyle: TextStyle(fontSize: 12),
+          minimumSize: Size(116, 32),
+        ),
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.blue,
+            ),
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  _quantity = (_quantity - 1).clamp(0, 10);
+                });
+              },
+              icon: Icon(Icons.remove),
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(width: 8),
+          Text(
+            '$_quantity',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(width: 8),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.blue,
+            ),
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  _quantity = (_quantity + 1).clamp(0, 10);
+                });
+              },
+              icon: Icon(Icons.add),
+              color: Colors.white,
+            ),
+          ),
+        ],
+      );
+    }
   }
 }
