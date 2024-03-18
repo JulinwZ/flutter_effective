@@ -187,7 +187,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                     ),
                     Container(
-                      height: 200,
+                      height: 196,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: categories[index].products.length,
@@ -197,7 +197,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              width: 120,
+                              width: 180,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -267,7 +267,7 @@ class _ProductPriceButtonState extends State<ProductPriceButton> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
           textStyle: TextStyle(fontSize: 12),
           minimumSize: Size(116, 32),
         ),
@@ -277,41 +277,69 @@ class _ProductPriceButtonState extends State<ProductPriceButton> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
+            width: 24,
+            height: 24,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: Colors.blue,
             ),
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  _quantity = (_quantity - 1).clamp(0, 10);
-                });
-              },
-              icon: Icon(Icons.remove),
-              color: Colors.white,
+            child: Center(
+              child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _quantity = (_quantity - 1).clamp(0, 10);
+                  });
+                },
+                icon: Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                  size: 12,
+                ),
+                padding: EdgeInsets.zero,
+              ),
             ),
           ),
-          SizedBox(width: 8),
-          Text(
-            '$_quantity',
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
+
           SizedBox(width: 8),
           Container(
+            width: 52,
+            height: 24,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20), color: Colors.blue),
+              child: Center(
+                child: Text(
+                  '$_quantity',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+          ),
+
+          SizedBox(width: 8),
+
+          Container(
+            width: 24,
+            height: 24,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: Colors.blue,
             ),
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  _quantity = (_quantity + 1).clamp(0, 10);
-                });
-              },
-              icon: Icon(Icons.add),
-              color: Colors.white,
+            child: Center(
+              child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _quantity = (_quantity + 1).clamp(0, 10);
+                  });
+                },
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 12,
+                ),
+                padding: EdgeInsets.zero,
+              ),
             ),
           ),
         ],
