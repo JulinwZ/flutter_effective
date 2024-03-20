@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'dart:convert';
 
 class Product {
+  final int id;
   final String name;
+  final String description;
   final String imageUrl;
   final String price;
 
   Product({
+    required this.id,
     required this.name,
+    required this.description,
     required this.imageUrl,
     required this.price,
   });
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+        id: json['id'] as int,
+        name: json['name'] as String,
+        description: json['description'] as String,
+        imageUrl: json['imageUrl'] as String,
+        price: json['prices'][0]['value'] as String);
+  }
 }
 
 class Category {
@@ -32,13 +44,7 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-
-  final dio = Dio();
-
-  void fetchData() async {
-    final response = await dio.get('https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=1');
-    print(response.statusCode);
-  }
+  List<Category> categories = [];
 
   @override
   void initState() {
@@ -46,83 +52,34 @@ class _MenuScreenState extends State<MenuScreen> {
     fetchData();
   }
 
-  final List<Category> categories = [
-    Category(
-      name: 'Черный кофе',
-      products: [
-        Product(
-          name: 'Американо',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-        Product(
-          name: 'Эспрессо',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-        Product(
-          name: 'Ванилька',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-      ],
-    ),
-    Category(
-      name: 'Кофе с молоком',
-      products: [
-        Product(
-          name: 'Капучино',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-        Product(
-          name: 'Латте',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-      ],
-    ),
-    Category(
-      name: 'Чай',
-      products: [
-        Product(
-          name: 'Зеленый',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-        Product(
-          name: 'Черный',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-        Product(
-          name: 'Улун',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-      ],
-    ),
-    Category(
-      name: 'Напитки авторские',
-      products: [
-        Product(
-          name: 'Зеленый',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-        Product(
-          name: 'Черный',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-        Product(
-          name: 'Улун',
-          imageUrl: 'assets/images/coffe.png',
-          price: '139 руб',
-        ),
-      ],
-    ),
-  ];
+  Future<void> fetchData() async {
+    try {
+      final response = await Dio().get(
+        'https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=10',
+      );
+
+      final List<dynamic> productsData = response.data['data'] as List<dynamic>;
+      final Map<String, List<Product>> groupedProducts = {};
+
+      productsData.forEach((productJson) {
+        final product = Product.fromJson(productJson as Map<String, dynamic>);
+        final categoryName = productJson['category']['slug'] as String;
+
+        if (!groupedProducts.containsKey(categoryName)) {
+          groupedProducts[categoryName] = [];
+        }
+        groupedProducts[categoryName]!.add(product);
+      });
+
+      setState(() {
+        categories = groupedProducts.entries.map((entry) {
+          return Category(name: entry.key, products: entry.value);
+        }).toList();
+      });
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
 
   int _selectedCategoryIndex = 0;
   final ScrollController _controller = ScrollController();
@@ -189,13 +146,14 @@ class _MenuScreenState extends State<MenuScreen> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
+                final category = categories[index];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        categories[index].name,
+                        category.name,
                         style: TextStyle(
                           fontSize: 32.0,
                           fontWeight: FontWeight.bold,
@@ -206,10 +164,9 @@ class _MenuScreenState extends State<MenuScreen> {
                       height: 196,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: categories[index].products.length,
+                        itemCount: category.products.length,
                         itemBuilder: (BuildContext context, int productIndex) {
-                          final product =
-                              categories[index].products[productIndex];
+                          final product = category.products[productIndex];
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
@@ -217,7 +174,7 @@ class _MenuScreenState extends State<MenuScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Image.asset(
+                                  Image.network(
                                     product.imageUrl,
                                     width: 100,
                                     height: 100,
@@ -274,11 +231,11 @@ class _ProductPriceButtonState extends State<ProductPriceButton> {
           });
         },
         child: Text(
-          widget.product.price,
+          widget.product.price.toString(),
           textAlign: TextAlign.center,
         ),
         style: TextButton.styleFrom(
-          primary: Colors.white,
+          foregroundColor: Colors.white,
           backgroundColor: Colors.blue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
