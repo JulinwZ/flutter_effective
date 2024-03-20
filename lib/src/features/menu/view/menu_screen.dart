@@ -56,6 +56,7 @@ class _MenuScreenState extends State<MenuScreen> {
     try {
       final response = await Dio().get(
         'https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=10',
+        // 'https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=10',
       );
 
       final List<dynamic> productsData = response.data['data'] as List<dynamic>;
@@ -87,10 +88,12 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF7FAF8),
       body: CustomScrollView(
         controller: _controller,
         slivers: [
           SliverAppBar(
+            backgroundColor: Color(0xFFF7FAF8),
             floating: true,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -132,7 +135,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             backgroundColor: MaterialStateProperty.all<Color>(
                               _selectedCategoryIndex == index
                                   ? Colors.blue
-                                  : Colors.transparent,
+                                  : Colors.white,
                             ),
                           ),
                         ),
@@ -170,6 +173,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
+                              color: Colors.white,
                               width: 180,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
