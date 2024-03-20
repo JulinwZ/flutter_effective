@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'dart:convert';
 
 class Product {
   final String name;
@@ -30,6 +32,20 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+
+  final dio = Dio();
+
+  void fetchData() async {
+    final response = await dio.get('https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=1');
+    print(response.statusCode);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
   final List<Category> categories = [
     Category(
       name: 'Черный кофе',
@@ -299,11 +315,10 @@ class _ProductPriceButtonState extends State<ProductPriceButton> {
               ),
             ),
           ),
-
           SizedBox(width: 8),
           Container(
-            width: 52,
-            height: 24,
+              width: 52,
+              height: 24,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20), color: Colors.blue),
               child: Center(
@@ -314,11 +329,8 @@ class _ProductPriceButtonState extends State<ProductPriceButton> {
                     color: Colors.white,
                   ),
                 ),
-              )
-          ),
-
+              )),
           SizedBox(width: 8),
-
           Container(
             width: 24,
             height: 24,
