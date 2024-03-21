@@ -1,41 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_course/src/features/menu/view//widgets/models.dart';
-
-// class Product {
-//   final int id;
-//   final String name;
-//   final String description;
-//   final String imageUrl;
-//   final String price;
-
-//   Product({
-//     required this.id,
-//     required this.name,
-//     required this.description,
-//     required this.imageUrl,
-//     required this.price,
-//   });
-
-//   factory Product.fromJson(Map<String, dynamic> json) {
-//     return Product(
-//         id: json['id'] as int,
-//         name: json['name'] as String,
-//         description: json['description'] as String,
-//         imageUrl: json['imageUrl'] as String,
-//         price: json['prices'][0]['value'] as String);
-//   }
-// }
-
-// class Category {
-//   final String name;
-//   final List<Product> products;
-
-//   Category({
-//     required this.name,
-//     required this.products,
-//   });
-// }
+import 'package:flutter_course/src/features/menu/view/widgets/models.dart';
+import 'package:flutter_course/src/features/menu/view/widgets/api_service.dart';
 
 class MenuScreen extends StatefulWidget {
   MenuScreen({Key? key}) : super(key: key);
@@ -50,33 +16,14 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    _fetchData();
   }
 
-  Future<void> fetchData() async {
+  Future<void> _fetchData() async {
     try {
-      final response = await Dio().get(
-        'https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=50',
-        // 'https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=10',
-      );
-
-      final List<dynamic> productsData = response.data['data'] as List<dynamic>;
-      final Map<String, List<Product>> groupedProducts = {};
-
-      productsData.forEach((productJson) {
-        final product = Product.fromJson(productJson as Map<String, dynamic>);
-        final categoryName = productJson['category']['slug'] as String;
-
-        if (!groupedProducts.containsKey(categoryName)) {
-          groupedProducts[categoryName] = [];
-        }
-        groupedProducts[categoryName]!.add(product);
-      });
-
+      final categoriesData = await ApiService.fetchData();
       setState(() {
-        categories = groupedProducts.entries.map((entry) {
-          return Category(name: entry.key, products: entry.value);
-        }).toList();
+        categories = categoriesData;
       });
     } catch (e) {
       print('Error fetching data: $e');
