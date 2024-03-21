@@ -3,7 +3,7 @@ class Product {
   final String name;
   final String description;
   final String imageUrl;
-  final String price;
+  final double price;
 
   Product({
     required this.id,
@@ -19,7 +19,7 @@ class Product {
       name: json['name'] as String,
       description: json['description'] as String,
       imageUrl: json['imageUrl'] as String,
-      price: json['prices'][0]['value'] as String,
+      price: double.parse(json['prices'][0]['value'] as String),
     );
   }
 }
