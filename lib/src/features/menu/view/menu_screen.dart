@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/models.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/api_service.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/product_price_button.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/sliver_app_bar.dart';
+import 'package:flutter_course/src/features/menu/view/widgets/custom_sliver_list.dart';
 
 class MenuScreen extends StatefulWidget {
   MenuScreen({Key? key}) : super(key: key);
@@ -56,67 +56,7 @@ class _MenuScreenState extends State<MenuScreen> {
               );
             },
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                final category = categories[index];
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        category.name,
-                        style: TextStyle(
-                          fontSize: 32.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 196,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: category.products.length,
-                        itemBuilder: (BuildContext context, int productIndex) {
-                          final product = category.products[productIndex];
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              color: Colors.white,
-                              width: 180,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.network(
-                                    product.imageUrl,
-                                    width: 100,
-                                    height: 100,
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    product.name,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  ProductPriceButton(product: product),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              },
-              childCount: categories.length,
-            ),
-          ),
+          CustomSliverList(categories: categories),
         ],
       ),
     );
