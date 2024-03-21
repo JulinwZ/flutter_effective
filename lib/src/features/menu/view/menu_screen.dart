@@ -4,7 +4,7 @@ import 'package:flutter_course/src/features/menu/view/widgets/api_service.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/product_price_button.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/sliver_app_bar.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/custom_sliver_list.dart';
-import 'package:flutter_course/src/features/menu/view/widgets/cart_button.dart'; // Импорт вашей кнопки
+import 'package:flutter_course/src/features/menu/view/widgets/cart_button.dart';
 
 class MenuScreen extends StatefulWidget {
   MenuScreen({Key? key}) : super(key: key);
@@ -15,6 +15,37 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   List<Category> categories = [];
+  List<Pair<Product, int>> selectedProducts = [];
+
+  void addToCart(Product product) {
+    setState(() {
+      bool alreadyInCart = false;
+      for (int i = 0; i < selectedProducts.length; i++) {
+        if (selectedProducts[i].first == product) {
+          selectedProducts[i] = Pair(selectedProducts[i].first, selectedProducts[i].second + 1);
+          alreadyInCart = true;
+          break;
+        }
+      }
+      if (!alreadyInCart) {
+        selectedProducts.add(Pair(product, 1));
+      }
+    });
+  }
+
+  void removeFromCart(Product product) {
+    setState(() {
+      for (int i = 0; i < selectedProducts.length; i++) {
+        if (selectedProducts[i].first == product) {
+          selectedProducts[i] = Pair(selectedProducts[i].first, selectedProducts[i].second - 1);
+          if (selectedProducts[i].second <= 0) {
+            selectedProducts.removeAt(i);
+          }
+          break;
+        }
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -59,13 +90,15 @@ class _MenuScreenState extends State<MenuScreen> {
                   );
                 },
               ),
-              CustomSliverList(categories: categories),
+              CustomSliverList(
+                categories: categories,
+                addToCart: addToCart,
+                removeFromCart: removeFromCart,
+              ),
             ],
           ),
           CartButton(
-            onPressed: () {
-              // Здесь можно добавить логику для нажатия кнопки корзины
-            },
+            selectedProducts: selectedProducts,
           ),
         ],
       ),

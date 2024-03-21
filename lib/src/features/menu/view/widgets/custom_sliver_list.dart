@@ -4,8 +4,12 @@ import 'package:flutter_course/src/features/menu/view/widgets/product_price_butt
 
 class CustomSliverList extends StatelessWidget {
   final List<Category> categories;
+  final Function(Product) addToCart;
+  final Function(Product) removeFromCart;
 
-  const CustomSliverList({Key? key, required this.categories}) : super(key: key);
+  const CustomSliverList(
+      {Key? key, required this.categories, required this.addToCart, required this.removeFromCart})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +60,11 @@ class CustomSliverList extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 8),
-                            ProductPriceButton(product: product),
+                            ProductPriceButton(
+                              product: product,
+                              addToCart: addToCart,
+                              removeFromCart: removeFromCart,
+                            ),
                           ],
                         ),
                       ),
