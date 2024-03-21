@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/models.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/api_service.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/product_price_button.dart';
+import 'package:flutter_course/src/features/menu/view/widgets/sliver_app_bar.dart';
 
 class MenuScreen extends StatefulWidget {
   MenuScreen({Key? key}) : super(key: key);
@@ -41,59 +42,19 @@ class _MenuScreenState extends State<MenuScreen> {
       body: CustomScrollView(
         controller: _controller,
         slivers: [
-          SliverAppBar(
-            backgroundColor: Color(0xFFF7FAF8),
-            floating: true,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 16.0),
-                  child: Row(
-                    children: List.generate(categories.length, (index) {
-                      final categoryName = categories[index].name;
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _selectedCategoryIndex = index;
-                            });
-                            _controller.animateTo(
-                              index * 300.0,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.easeInOut,
-                            );
-                          },
-                          child: Text(
-                            categoryName,
-                            style: TextStyle(
-                              color: _selectedCategoryIndex == index
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          ),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              _selectedCategoryIndex == index
-                                  ? Colors.blue
-                                  : Colors.white,
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-              ),
-            ),
+          CustomSliverAppBar(
+            categories: categories,
+            selectedCategoryIndex: _selectedCategoryIndex,
+            onCategorySelected: (index) {
+              setState(() {
+                _selectedCategoryIndex = index;
+              });
+              _controller.animateTo(
+                index * 300.0,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+            },
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
