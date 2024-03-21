@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_course/src/features/menu/view//widgets/models.dart';
 
-class Product {
-  final int id;
-  final String name;
-  final String description;
-  final String imageUrl;
-  final String price;
+// class Product {
+//   final int id;
+//   final String name;
+//   final String description;
+//   final String imageUrl;
+//   final String price;
 
-  Product({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.imageUrl,
-    required this.price,
-  });
+//   Product({
+//     required this.id,
+//     required this.name,
+//     required this.description,
+//     required this.imageUrl,
+//     required this.price,
+//   });
 
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-        id: json['id'] as int,
-        name: json['name'] as String,
-        description: json['description'] as String,
-        imageUrl: json['imageUrl'] as String,
-        price: json['prices'][0]['value'] as String);
-  }
-}
+//   factory Product.fromJson(Map<String, dynamic> json) {
+//     return Product(
+//         id: json['id'] as int,
+//         name: json['name'] as String,
+//         description: json['description'] as String,
+//         imageUrl: json['imageUrl'] as String,
+//         price: json['prices'][0]['value'] as String);
+//   }
+// }
 
-class Category {
-  final String name;
-  final List<Product> products;
+// class Category {
+//   final String name;
+//   final List<Product> products;
 
-  Category({
-    required this.name,
-    required this.products,
-  });
-}
+//   Category({
+//     required this.name,
+//     required this.products,
+//   });
+// }
 
 class MenuScreen extends StatefulWidget {
   MenuScreen({Key? key}) : super(key: key);
@@ -55,7 +56,7 @@ class _MenuScreenState extends State<MenuScreen> {
   Future<void> fetchData() async {
     try {
       final response = await Dio().get(
-        'https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=10',
+        'https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=50',
         // 'https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=10',
       );
 
