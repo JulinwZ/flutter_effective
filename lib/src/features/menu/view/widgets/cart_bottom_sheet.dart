@@ -83,6 +83,7 @@ class CartBottomSheet extends StatelessWidget {
                     SnackBar(
                       content: Text('Заказ успешно оформлен!'),
                       backgroundColor: Colors.green,
+                      duration: Duration(seconds: 2),
                     ),
                   );
                 } else {
@@ -91,6 +92,7 @@ class CartBottomSheet extends StatelessWidget {
                     SnackBar(
                       content: Text('Ошибка при оформлении заказа!'),
                       backgroundColor: Colors.red,
+                      duration: Duration(seconds: 2),
                     ),
                   );
                 }

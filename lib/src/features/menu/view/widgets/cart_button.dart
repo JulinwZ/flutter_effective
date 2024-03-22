@@ -6,7 +6,8 @@ class CartButton extends StatelessWidget {
   final List<Pair<Product, int>> selectedProducts;
   final VoidCallback onClear;
 
-  const CartButton({Key? key, required this.selectedProducts, required this.onClear})
+  const CartButton(
+      {Key? key, required this.selectedProducts, required this.onClear})
       : super(key: key);
 
   @override
@@ -63,9 +64,6 @@ class CartButton extends StatelessWidget {
                   ),
                 ),
               ),
-
-
-
             ],
           ),
         ));

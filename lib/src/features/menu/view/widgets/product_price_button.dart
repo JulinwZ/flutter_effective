@@ -22,8 +22,10 @@ class ProductPriceButton extends StatefulWidget {
 class _ProductPriceButtonState extends State<ProductPriceButton> {
   @override
   Widget build(BuildContext context) {
-    final selectedQuantity =
-        widget.selectedProducts.firstWhere((pair) => pair.first == widget.product, orElse: () => Pair(widget.product, 0)).second;
+    final selectedQuantity = widget.selectedProducts
+        .firstWhere((pair) => pair.first == widget.product,
+            orElse: () => Pair(widget.product, 0))
+        .second;
 
     if (selectedQuantity == 0) {
       return TextButton(

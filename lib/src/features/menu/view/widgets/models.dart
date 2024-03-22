@@ -49,7 +49,8 @@ class PaymentData {
 
   Map<String, dynamic> toJson() {
     return {
-      'positions': positions.map((productId, quantity) => MapEntry(productId.toString(), quantity)),
+      'positions': positions.map(
+          (productId, quantity) => MapEntry(productId.toString(), quantity)),
       'token': token,
     };
   }
