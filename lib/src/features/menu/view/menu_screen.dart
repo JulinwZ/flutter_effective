@@ -67,7 +67,8 @@ class _MenuScreenState extends State<MenuScreen> {
                   CartOperations.addToCart(product, selectedProducts, setState);
                 },
                 removeFromCart: (Product product) {
-                  CartOperations.removeFromCart(product, selectedProducts, setState);
+                  CartOperations.removeFromCart(
+                      product, selectedProducts, setState);
                 },
                 selectedProducts: selectedProducts,
               ),

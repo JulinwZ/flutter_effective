@@ -47,11 +47,32 @@ class CartBottomSheet extends StatelessWidget {
               itemCount: selectedProducts.length,
               itemBuilder: (context, index) {
                 final Pair<Product, int> pair = selectedProducts[index];
-                return ListTile(
-                  title: Text(pair.first.name),
-                  subtitle: Text('Количество: ${pair.second}'),
-                  trailing: Text(
-                      'Цена: ${(pair.first.price * pair.second).toStringAsFixed(2)}'),
+                return Column(
+                  children: [
+                    for (int i = 0; i < pair.second; i++)
+                      Column(
+                        children: [
+                          ListTile(
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: SizedBox(
+                                width: 56,
+                                height: 56,
+                                child: Image.network(
+                                  pair.first.imageUrl,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            title: Text(pair.first.name),
+                            trailing: Text(
+                              'Цена: ${(pair.first.price).toStringAsFixed(2)}',
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                      ),
+                  ],
                 );
               },
             ),

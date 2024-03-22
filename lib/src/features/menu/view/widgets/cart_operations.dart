@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/models.dart';
 
 class CartOperations {
-  static void addToCart(Product product, List<Pair<Product, int>> selectedProducts, Function setState) {
+  static void addToCart(Product product,
+      List<Pair<Product, int>> selectedProducts, Function setState) {
     setState(() {
       bool alreadyInCart = false;
       for (int i = 0; i < selectedProducts.length; i++) {
@@ -19,7 +20,8 @@ class CartOperations {
     });
   }
 
-  static void removeFromCart(Product product, List<Pair<Product, int>> selectedProducts, Function setState) {
+  static void removeFromCart(Product product,
+      List<Pair<Product, int>> selectedProducts, Function setState) {
     setState(() {
       for (int i = 0; i < selectedProducts.length; i++) {
         if (selectedProducts[i].first == product) {
@@ -34,7 +36,8 @@ class CartOperations {
     });
   }
 
-  static void clearCart(List<Pair<Product, int>> selectedProducts, Function setState) {
+  static void clearCart(
+      List<Pair<Product, int>> selectedProducts, Function setState) {
     setState(() {
       selectedProducts.clear();
     });
