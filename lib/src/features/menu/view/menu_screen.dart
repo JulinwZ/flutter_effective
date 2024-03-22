@@ -102,6 +102,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 categories: categories,
                 addToCart: addToCart,
                 removeFromCart: removeFromCart,
+                selectedProducts: selectedProducts,
               ),
             ],
           ),

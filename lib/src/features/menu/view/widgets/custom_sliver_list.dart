@@ -6,9 +6,10 @@ class CustomSliverList extends StatelessWidget {
   final List<Category> categories;
   final Function(Product) addToCart;
   final Function(Product) removeFromCart;
+  final List<Pair<Product, int>> selectedProducts;
 
   const CustomSliverList(
-      {Key? key, required this.categories, required this.addToCart, required this.removeFromCart})
+      {Key? key, required this.categories, required this.addToCart, required this.removeFromCart, required this.selectedProducts})
       : super(key: key);
 
   @override
@@ -64,6 +65,7 @@ class CustomSliverList extends StatelessWidget {
                               product: product,
                               addToCart: addToCart,
                               removeFromCart: removeFromCart,
+                              selectedProducts: selectedProducts,
                             ),
                           ],
                         ),

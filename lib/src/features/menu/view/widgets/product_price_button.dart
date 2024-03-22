@@ -5,28 +5,31 @@ class ProductPriceButton extends StatefulWidget {
   final Product product;
   final Function(Product) addToCart;
   final Function(Product) removeFromCart;
+  final List<Pair<Product, int>> selectedProducts;
 
-  const ProductPriceButton(
-      {Key? key, required this.product, required this.addToCart,required this.removeFromCart})
-      : super(key: key);
+  const ProductPriceButton({
+    Key? key,
+    required this.product,
+    required this.addToCart,
+    required this.removeFromCart,
+    required this.selectedProducts,
+  }) : super(key: key);
 
   @override
   _ProductPriceButtonState createState() => _ProductPriceButtonState();
 }
 
 class _ProductPriceButtonState extends State<ProductPriceButton> {
-  int _quantity = 0;
-
   @override
   Widget build(BuildContext context) {
-    if (_quantity == 0) {
+    final selectedQuantity =
+        widget.selectedProducts.firstWhere((pair) => pair.first == widget.product, orElse: () => Pair(widget.product, 0)).second;
+
+    if (selectedQuantity == 0) {
       return TextButton(
         onPressed: () {
-          if (_quantity < 10) {
-            setState(() {
-              _quantity++;
-              widget.addToCart(widget.product);
-            });
+          if (selectedQuantity < 10) {
+            widget.addToCart(widget.product);
           }
         },
         child: Text(
@@ -48,71 +51,37 @@ class _ProductPriceButtonState extends State<ProductPriceButton> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 24,
-            height: 24,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+          IconButton(
+            onPressed: () {
+              if (selectedQuantity > 0) {
+                widget.removeFromCart(widget.product);
+              }
+            },
+            icon: Icon(
+              Icons.remove,
               color: Colors.blue,
-            ),
-            child: Center(
-              child: IconButton(
-                onPressed: () {
-                  setState(() {
-                    _quantity -= 1;
-                    widget.removeFromCart(widget.product);
-                  });
-                },
-                icon: Icon(
-                  Icons.remove,
-                  color: Colors.white,
-                  size: 12,
-                ),
-                padding: EdgeInsets.zero,
-              ),
+              size: 16,
             ),
           ),
           SizedBox(width: 8),
-          Container(
-            width: 52,
-            height: 24,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20), color: Colors.blue),
-            child: Center(
-              child: Text(
-                '$_quantity',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                ),
-              ),
-            )
+          Text(
+            '$selectedQuantity',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.black,
+            ),
           ),
           SizedBox(width: 8),
-          Container(
-            width: 24,
-            height: 24,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+          IconButton(
+            onPressed: () {
+              if (selectedQuantity < 10) {
+                widget.addToCart(widget.product);
+              }
+            },
+            icon: Icon(
+              Icons.add,
               color: Colors.blue,
-            ),
-            child: Center(
-              child: IconButton(
-                onPressed: () {
-                  if (_quantity < 10) {
-                    setState(() {
-                      _quantity++;
-                      widget.addToCart(widget.product);
-                    });
-                  }
-                },
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 12,
-                ),
-                padding: EdgeInsets.zero,
-              ),
+              size: 16,
             ),
           ),
         ],
