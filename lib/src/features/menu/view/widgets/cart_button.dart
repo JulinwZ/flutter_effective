@@ -29,39 +29,41 @@ class CartButton extends StatelessWidget {
           visible: empty,
           child: Column(
             children: [
-
               Container(
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 padding: EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.shopping_cart),
-                      color: Colors.white, // цвет иконки
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => CartBottomSheet(
-                            selectedProducts: selectedProducts,
-                            totalCost: totalCost,
-                            onClear: onClear,
-                          ),
-                        );
-                      },
-                    ),
-                    Text(
-                      totalCost.toString(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
+                child: TextButton.icon(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => CartBottomSheet(
+                        selectedProducts: selectedProducts,
+                        totalCost: totalCost,
+                        onClear: onClear,
                       ),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white, // цвет иконки
+                  ),
+                  label: Text(
+                    totalCost.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
                     ),
-                  ],
+                  ),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white, // цвет текста
+                    padding: EdgeInsets.zero,
+                  ),
                 ),
               ),
+
 
 
             ],
