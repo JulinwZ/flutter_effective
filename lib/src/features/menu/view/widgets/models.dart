@@ -40,3 +40,17 @@ class Pair<A, B> {
 
   Pair(this.first, this.second);
 }
+
+class PaymentData {
+  late Map<int, int> positions;
+  late String token;
+
+  PaymentData(this.positions, this.token);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'positions': positions.map((productId, quantity) => MapEntry(productId.toString(), quantity)),
+      'token': token,
+    };
+  }
+}

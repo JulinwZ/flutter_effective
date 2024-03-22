@@ -1,12 +1,12 @@
-import "package:dio/dio.dart";
+import 'package:dio/dio.dart';
 import 'package:flutter_course/src/features/menu/view/widgets/models.dart';
+import 'dart:convert';
 
 class ApiService {
   static Future<List<Category>> fetchData() async {
     try {
       final response = await Dio().get(
         'https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=50',
-        // 'https://coffeeshop.academy.effective.band/api/v1/products/?page=0&limit=10',
       );
 
       final List<dynamic> productsData = response.data['data'] as List<dynamic>;
@@ -30,6 +30,21 @@ class ApiService {
     } catch (e) {
       print('Error fetching data: $e');
       return [];
+    }
+  }
+
+  static Future<bool> makePayment(PaymentData paymentData) async {
+    try {
+      final response = await Dio().post(
+        'https://coffeeshop.academy.effective.band/api/v1/orders',
+        data: paymentData.toJson(),
+      );
+
+      print('Payment response: ${response.statusCode}');
+      return true;
+    } catch (e) {
+      print('Error making payment: $e');
+      return false;
     }
   }
 }

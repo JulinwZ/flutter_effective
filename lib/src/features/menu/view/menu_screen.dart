@@ -17,12 +17,19 @@ class _MenuScreenState extends State<MenuScreen> {
   List<Category> categories = [];
   List<Pair<Product, int>> selectedProducts = [];
 
+  void onClear() {
+    setState(() {
+      selectedProducts.clear();
+    });
+  }
+
   void addToCart(Product product) {
     setState(() {
       bool alreadyInCart = false;
       for (int i = 0; i < selectedProducts.length; i++) {
         if (selectedProducts[i].first == product) {
-          selectedProducts[i] = Pair(selectedProducts[i].first, selectedProducts[i].second + 1);
+          selectedProducts[i] =
+              Pair(selectedProducts[i].first, selectedProducts[i].second + 1);
           alreadyInCart = true;
           break;
         }
@@ -37,7 +44,8 @@ class _MenuScreenState extends State<MenuScreen> {
     setState(() {
       for (int i = 0; i < selectedProducts.length; i++) {
         if (selectedProducts[i].first == product) {
-          selectedProducts[i] = Pair(selectedProducts[i].first, selectedProducts[i].second - 1);
+          selectedProducts[i] =
+              Pair(selectedProducts[i].first, selectedProducts[i].second - 1);
           if (selectedProducts[i].second <= 0) {
             selectedProducts.removeAt(i);
           }
@@ -99,6 +107,7 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
           CartButton(
             selectedProducts: selectedProducts,
+            onClear: onClear,
           ),
         ],
       ),
